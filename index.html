@@ -129,12 +129,40 @@
             opacity: 0.9;
         }
 
+        /* BANNER DE RECADOS E AVISOS DA PLANILHA */
+        .notice-banner {
+            background-color: #fff3cd;
+            border-left: 6px solid #ffc107;
+            color: #856404;
+            padding: 1.2rem 1.5rem;
+            margin: 1.5rem auto 0;
+            max-width: 1200px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: none; /* Exibido via JS se houver aviso */
+        }
+
+        .notice-banner h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.4rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #856404;
+        }
+
+        .notice-banner p {
+            font-size: 0.95rem;
+            white-space: pre-wrap; /* Mantém quebras de linha se houver */
+        }
+
         /* Hero */
         .hero {
             background: linear-gradient(135deg, #1e56a0, #163172);
             color: white;
             text-align: center;
-            padding: 3rem 1rem;
+            padding: 2.5rem 1rem;
+            margin-top: 1.5rem;
         }
 
         .hero h2 {
@@ -260,6 +288,11 @@
             <p>Sociedade Espírita Vinha de Luz – Gravataí/RS</p>
         </header>
 
+        <div id="notice-banner" class="notice-banner">
+            <h3>📢 Recados e Avisos</h3>
+            <p id="notice-text">Carregando avisos...</p>
+        </div>
+
         <section class="hero">
             <h2>Bem-vindo ao Portal do Evangelizador</h2>
             <p>Recursos, planejamento e suporte para a Evangelização Infantojuvenil.</p>
@@ -279,7 +312,7 @@
                             📊 Planilha de Histórias
                         </a>
                         <a href="./Livros_conte_mais.pdf" target="_blank" rel="noopener noreferrer" class="btn-secondary">
-                            📕 Livros Ilustrados na Vinha
+                            📕 Livro Conte Mais (PDF)
                         </a>
                     </div>
                 </div>
@@ -290,7 +323,7 @@
                         <h3>Modelo de Acompanhamento de Evangelizandos</h3>
                         <p>Acesse a planilha com os modelos de acompanhamento e frequência dos evangelizandos.</p>
                     </div>
-                    <a href="https://docs.google.com/spreadsheets/d/1lFAA9XDAB0fVQHiRuZP62qYfrd8_szxdh4k4V9tqL2Y/edit?usp=drive_link" target="_blank" rel="noopener noreferrer">
+                    <a href="https://docs.google.com/spreadsheets/d/1e5B1klljByxA59XbzXSV8otQ_t19qHQf8hhkQjJVUfM/edit?usp=drive_link" target="_blank" rel="noopener noreferrer">
                         📊 Fichas de Acompanhamento
                     </a>
                 </div>
@@ -301,7 +334,7 @@
                         <h3>Sites e Livros para Evangelizar</h3>
                         <p>Acesse a planilha de recomendações de sites, livros e bibliografias para evangelização.</p>
                     </div>
-                    <a href="https://docs.google.com/spreadsheets/d/1e5B1klljByxA59XbzXSV8otQ_t19qHQf8hhkQjJVUfM/edit?usp=drive_link" target="_blank" rel="noopener noreferrer">
+                    <a href="https://docs.google.com/spreadsheets/d/1lFAA9XDAB0fVQHiRuZP62qYfrd8_szxdh4k4V9tqL2Y/edit?usp=drive_link" target="_blank" rel="noopener noreferrer">
                         📊 Planilha de Sites e Livros
                     </a>
                 </div>
@@ -312,7 +345,7 @@
                         <h3>Atividades e Dinâmicas</h3>
                         <p>Acesse a planilha com sugestões de atividades práticas e dinâmicas por faixa etária.</p>
                     </div>
-                    <a href="https://docs.google.com/spreadsheets/d/1CMjORJEq3PaL4BbZ-zezyle623SPVXUKCh5QF22M_OE/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+                    <a href="https://docs.google.com/spreadsheets/d/1nXTWiZoO18YHPm7Dx0lG-kCV7bx0omYmcK7aRhx9kj0/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
                         📊 Planilha de Atividades
                     </a>
                 </div>
@@ -337,10 +370,39 @@
     </div>
 
     <script>
+        // ID DA PLANILHA DE RECADOS E AVISOS
+        const RECADOS_SPREADSHEET_ID = '1U1gwC2w65_kPPum-Ky5V59NHxMdXhqz5YjFCrW1XOkA';
+
+        // Função para buscar a mensagem da planilha no Google Sheets
+        function carregarRecadosEAvisos() {
+            const url = `https://docs.google.com/spreadsheets/d/${RECADOS_SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
+
+            fetch(url)
+                .then(response => response.text())
+                .then(data => {
+                    // Extrai o JSON válido da resposta do Google Visualization API
+                    const jsonData = JSON.parse(data.substring(47, data.length - 2));
+                    const rows = jsonData.table.rows;
+
+                    if (rows && rows.length > 0) {
+                        // Pega o valor da célula A1
+                        const mensagem = rows[0].c[0] ? rows[0].c[0].v : null;
+
+                        if (mensagem && mensagem.trim() !== '') {
+                            document.getElementById('notice-text').innerText = mensagem;
+                            document.getElementById('notice-banner').style.display = 'block';
+                        }
+                    }
+                })
+                .catch(err => {
+                    console.error('Erro ao carregar recados e avisos:', err);
+                });
+        }
+
+        // Evento de envio do formulário de login
         document.getElementById('login-form').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // CONFIGURE AQUI O USUÁRIO E A SENHA DE ACESSO
             const usuarioCorreto = "aij";
             const senhaCorreta = "vinhadeluz";
 
@@ -349,11 +411,12 @@
             const errorMsg = document.getElementById('error-msg');
 
             if (userInput === usuarioCorreto && passInput === senhaCorreta) {
-                // Oculta a tela de login e exibe o portal
                 document.getElementById('login-screen').style.display = 'none';
                 document.getElementById('portal-content').style.display = 'block';
+                
+                // Carrega os recados e avisos assim que o login for realizado
+                carregarRecadosEAvisos();
             } else {
-                // Exibe mensagem de erro
                 errorMsg.style.display = 'block';
             }
         });
