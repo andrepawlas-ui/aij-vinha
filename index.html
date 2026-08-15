@@ -204,6 +204,30 @@
             background-color: #163172;
         }
 
+        /* Grupo de Links em Card */
+        .card-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .card-links a {
+            font-size: 0.88rem;
+            padding: 0.6rem 1rem;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card-links a.btn-secondary {
+            background-color: #2b7a78;
+        }
+
+        .card-links a.btn-secondary:hover {
+            background-color: #17252a;
+        }
+
         /* Footer */
         footer {
             text-align: center;
@@ -257,9 +281,16 @@
                     <div>
                         <div class="tile-icon">📖</div>
                         <h3>Contação de Histórias</h3>
-                        <p>Acesse o acervo compartilhado com histórias infantis, recursos visuais e materiais pedagógicos.</p>
+                        <p>Acesse a planilha do acervo compartilhado ou baixe o livro de histórias em PDF.</p>
                     </div>
-                    <a href="https://docs.google.com/spreadsheets/d/1i-u2NssbSVX_01drApLapayv__iRFPJO0lcaldMEz8E/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Acessar Histórias</a>
+                    <div class="card-links">
+                        <a href="https://docs.google.com/spreadsheets/d/1i-u2NssbSVX_01drApLapayv__iRFPJO0lcaldMEz8E/edit?usp=sharing" target="_blank" rel="noopener noreferrer">
+                            📊 Planilha de Histórias
+                        </a>
+                        <a href="./Livros_conte_mais.pdf" target="_blank" rel="noopener noreferrer" class="btn-secondary">
+                            📕 Livros Conte Mais na Vinha(PDF)
+                        </a>
+                    </div>
                 </div>
 
                 <div class="tile">
