@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal AIJ - Vinha de Luz Gravataí</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* TELA DE LOGIN */
+        #login-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: linear-gradient(135deg, #1e56a0, #163172);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .login-card {
+            background-color: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-card h2 {
+            color: #1e56a0;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
+        .login-card p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #163172;
+            margin-bottom: 0.3rem;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #1e56a0;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: #1e56a0;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-login:hover {
+            background-color: #163172;
+        }
+
+        .error-msg {
+            color: #d9534f;
+            font-size: 0.85rem;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        /* PORTAL PRINCIPAL (OCULTO INICIALMENTE) */
+        #portal-content {
+            display: none;
+        }
+
+        /* Header */
+        header {
+            background-color: #1e56a0;
+            color: white;
+            padding: 1.5rem 2rem;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+        }
+
+        header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #1e56a0, #163172);
+            color: white;
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+
+        .hero h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Grid de Tiles */
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .tiles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tile {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-top: 5px solid #1e56a0;
+        }
+
+        .tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .tile-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .tile h3 {
+            color: #163172;
+            margin-bottom: 0.5rem;
+        }
+
+        .tile p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .tile a {
+            display: inline-block;
+            text-align: center;
+            background-color: #1e56a0;
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.2s;
+        }
+
+        .tile a:hover {
+            background-color: #163172;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1.5rem;
+            background-color: #d6e4f0;
+            color: #163172;
+            margin-top: 3rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <div class="login-card">
+            <h2>Portal AIJ</h2>
+            <p>Vinha de Luz – Gravataí/RS</p>
+            
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="username">Usuário</label>
+                    <input type="text" id="username" placeholder="Digite o usuário" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="password">Senha</label>
+                    <input type="password" id="password" placeholder="Digite a senha" required>
+                </div>
+                
+                <button type="submit" class="btn-login">Entrar</button>
+                <div id="error-msg" class="error-msg">Usuário ou senha incorretos!</div>
+            </form>
+        </div>
+    </div>
+
+    <div id="portal-content">
+        <header>
+            <h1>Área da Infância e Juventude (AIJ)</h1>
+            <p>Sociedade Espírita Vinha de Luz – Gravataí/RS</p>
+        </header>
+
+        <section class="hero">
+            <h2>Bem-vindo ao Portal do Evangelizador</h2>
+            <p>Recursos, planejamento e suporte para a Evangelização Infantojuvenil.</p>
+        </section>
+
+        <div class="container">
+            <div class="tiles-grid">
+                
+                <div class="tile">
+                    <div>
+                        <div class="tile-icon">📖</div>
+                        <h3>Contação de Histórias</h3>
+                        <p>Acesse o acervo compartilhado com histórias infantis, recursos visuais e materiais pedagógicos.</p>
+                    </div>
+                    <a href="https://docs.google.com/spreadsheets/d/1i-u2NssbSVX_01drApLapayv__iRFPJO0lcaldMEz8E/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Acessar Histórias</a>
+                </div>
+
+                <div class="tile">
+                    <div>
+                        <div class="tile-icon">📋</div>
+                        <h3>Acompanhamento dos Evangelizandos</h3>
+                        <p>Modelos de fichas de frequência, relatórios evolutivos e fichas de integração familiar.</p>
+                    </div>
+                    <a href="#">Baixar Modelos</a>
+                </div>
+
+                <div class="tile">
+                    <div>
+                        <div class="tile-icon">📚</div>
+                        <h3>Sites e Livros para Evangelizar</h3>
+                        <p>Recomendações de obras espíritas, bibliografias de apoio e portais federativos parceiros.</p>
+                    </div>
+                    <a href="#">Ver Recomendações</a>
+                </div>
+
+                <div class="tile">
+                    <div>
+                        <div class="tile-icon">🎨</div>
+                        <h3>Atividades e Dinâmicas</h3>
+                        <p>Planos de aula, atividades práticas, folhas de colorir e dinâmicas de grupo por faixa etária.</p>
+                    </div>
+                    <a href="#">Explorar Material</a>
+                </div>
+
+                <div class="tile">
+                    <div>
+                        <div class="tile-icon">📅</div>
+                        <h3>Calendário e Planejamento</h3>
+                        <p>Cronograma do ano letivo, reuniões pedagógicas e eventos da Vinha de Luz.</p>
+                    </div>
+                    <a href="#">Consultar Agenda</a>
+                </div>
+
+            </div>
+        </div>
+
+        <footer>
+            <p>AIJ – Sociedade Espírita Vinha de Luz | Gravataí - RS</p>
+        </footer>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // CONFIGURE AQUI O USUÁRIO E A SENHA DE ACESSO
+            const usuarioCorreto = "aij";
+            const senhaCorreta = "vinhadeluz";
+
+            const userInput = document.getElementById('username').value;
+            const passInput = document.getElementById('password').value;
+            const errorMsg = document.getElementById('error-msg');
+
+            if (userInput === usuarioCorreto && passInput === senhaCorreta) {
+                // Oculta a tela de login e exibe o portal
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('portal-content').style.display = 'block';
+            } else {
+                // Exibe mensagem de erro
+                errorMsg.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>
